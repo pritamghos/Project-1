@@ -1,0 +1,28 @@
+## First of all I commonly set the input Z as a matrix
+## then I try to set the solved value "W" as a null
+## then I changed every reference to "mean" to "solve"
+makeCacheMatrix <- function(Z = matrix(sample(1:100,9),3,3)) {
+  W <- NULL
+  set <- function(y) {
+    Z <<- y
+    W <<- NULL
+  }
+  get <- function() Z
+  setsolve <- function(solve) W <<- solve
+  getsolve <- function() W
+  list(set = set, get = get,
+       setsolve = setsolve,
+       getsolve = getsolve)
+}
+## Same here, changed "mean" to "solve" and "m" to "W"
+cacheSolve <- function(Z, ...) {
+  W <- Z$getsolve()
+  if(!is.null(W)) {
+    message("getting inversed matrix")
+    return(W)
+  }
+  data <- Z$get()
+  W <- solve(data, ...)
+  Z$setsolve(W)
+  W
+}
